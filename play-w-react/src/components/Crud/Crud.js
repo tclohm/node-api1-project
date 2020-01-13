@@ -1,18 +1,16 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Container, Row, Col, Button, Form, FormGroup, Label, Input, Alert, Table } from 'reactstrap';
+import { Container, Row, Col, Button, Form, Label, Input, Alert, Table } from 'reactstrap';
 import { UserTable } from "../UserTable";
 
 export const Crud = (props) => {
 	const [name, setName] = useState("");
 	const [bio, setBio] = useState("");
-
-	const [error, setError] = useState("");
-
+	const [message, setMessage] = useState("");
 	const [data, setData] = useState([]);
+	const [feedback, setFeedback] = useState(false);
 
 	useEffect(() => {
-		if(data.length === 0) {
 			axios.get("http://www.localhost:4000/api/users")
 				 .then(res => {
 				 	setData(res.data)
@@ -20,7 +18,6 @@ export const Crud = (props) => {
 				 .catch(err => {
 				 	console.log(err);
 				 })
-		}
 	}, [data])
 
 	const handleChanges = (event) => {
@@ -33,12 +30,39 @@ export const Crud = (props) => {
 		//[event.target.name]: event.target.value
 	}
 
+	const post = (event) => {
+		event.preventDefault();
+		const obj = {"name": name, "bio": bio}
+		axios.post("http://www.localhost:4000/api/users", obj)
+			 .then(res => {
+			 	console.log(res)
+			 	setMessage(res.statusText);
+			 	alertTimer();
+			 })
+			 .catch(err => {
+			 	console.log(err.status);
+			 	setMessage(err.statusText);
+			 	alertTimer();
+			 })
+	}
+
+	const alertTimer = () => {
+		setFeedback(true);
+		setTimeout(() => {
+			setFeedback(false);
+		}, 2000);
+	}
+
 	return (
 		<Container>
 		<Row>
+			{feedback ?
 			<Col sm={{ size: 6, offset: 3 }}>
-			<Alert color="danger">warning for later</Alert>
+			<Alert color="success">{message}</Alert>
 			</Col>
+			:
+			<></>
+			}
 		</Row>
 		<Row>
 		<Col sm={{ size: 7 }}>
@@ -75,7 +99,7 @@ export const Crud = (props) => {
         	<br/>
         	<Row>
         		<Col>
-        		<Button color="primary" bsSize="lg" block>POST</Button>
+        		<Button color="primary" bsSize="lg" block onClick={post}>POST</Button>
         		</Col>
         	</Row>
       	</Form>
