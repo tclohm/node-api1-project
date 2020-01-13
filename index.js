@@ -1,9 +1,13 @@
 // implement your API here
 const express = require('express');
 const db = require('./data/db.js');
+const cors = require('cors');
 const server = express();
 
 server.use(express.json());
+server.use(cors({
+	origin: 'http://localhost:3000'
+}));
 
 server.get('/', (request, response) => {
 	response.send('Hello world...');
