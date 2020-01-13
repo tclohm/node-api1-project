@@ -6,6 +6,7 @@ import { UserTable } from "../UserTable";
 export const Crud = (props) => {
 	const [name, setName] = useState("");
 	const [bio, setBio] = useState("");
+	const [obj, setObj] = useState({name: "", bio: ""});
 	const [message, setMessage] = useState("");
 	const [data, setData] = useState([]);
 	const [feedback, setFeedback] = useState(false);
@@ -21,18 +22,17 @@ export const Crud = (props) => {
 	}, [data])
 
 	const handleChanges = (event) => {
-		if(event.target.name === "name") {
-			setName(event.target.value);
-		}
-		if(event.target.name === "bio") {
-			setBio(event.target.value)
-		}
-		//[event.target.name]: event.target.value
+		// if(event.target.name === "name") {
+		// 	setName(event.target.value);
+		// }
+		// if(event.target.name === "bio") {
+		// 	setBio(event.target.value)
+		// }
+		setObj({...obj, [event.target.name]: event.target.value});
 	}
 
 	const post = (event) => {
 		event.preventDefault();
-		const obj = {"name": name, "bio": bio}
 		axios.post("http://www.localhost:4000/api/users", obj)
 			 .then(res => {
 			 	console.log(res)
@@ -44,6 +44,7 @@ export const Crud = (props) => {
 			 	setMessage(err.statusText);
 			 	alertTimer();
 			 })
+		setObj({name: "", bio: ""})
 	}
 
 	const alertTimer = () => {
@@ -87,13 +88,13 @@ export const Crud = (props) => {
       			<Col>
       			<br/>
         		<Label className="text-light" for="Name">Name</Label>
-        		<Input size="md" type="text" name="name" placeholder="name" onChange={handleChanges} />
+        		<Input size="md" type="text" name="name" placeholder="name" value={obj.name} onChange={handleChanges} />
         		</Col>
         	</Row>
       		<Row>
       			<Col>
         		<Label className="text-light" for="Bio">Bio</Label>
-        		<Input size="md" type="text" name="bio" placeholder="bio" onChange={handleChanges} />
+        		<Input size="md" type="text" name="bio" placeholder="bio" value={obj.bio} onChange={handleChanges} />
         		</Col>
         	</Row>
         	<br/>
