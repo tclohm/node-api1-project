@@ -22,12 +22,6 @@ export const Crud = (props) => {
 	}, [data])
 
 	const handleChanges = (event) => {
-		// if(event.target.name === "name") {
-		// 	setName(event.target.value);
-		// }
-		// if(event.target.name === "bio") {
-		// 	setBio(event.target.value)
-		// }
 		setObj({...obj, [event.target.name]: event.target.value});
 	}
 

@@ -5,13 +5,13 @@ import axios from "axios";
 
 export const UserTable = (props) => {
 
-	const [newObj, setNewObj] = useState({name: "", bio: ""});
+	const { id, name, bio } = props;
+	const toLink = `crud/${id}`;
+
+	const [newObj, setNewObj] = useState({name: name, bio: bio});
 	const [message, setMessage] = useState("");
 	const [feedback, setFeedback] = useState(false);
 	const [isEditing, setIsEditing] = useState(false);
-
-	const { id, name, bio } = props;
-	const toLink = `crud/${id}`;
 
 	const deleteByID = (event) => {
 		axios.delete(`http://www.localhost:4000/api/users/${id}`)
@@ -36,11 +36,18 @@ export const UserTable = (props) => {
 	}
 
 	const handleChanges = (event) => {
-
+		setNewObj({...newObj, [event.target.name]: event.target.value})
 	}
 
 	const put = (event) => {
-		console.log("put")
+		axios.put(`http://www.localhost:4000/api/users/${id}`, newObj)
+			 .then(res => {
+			 	console.log(res);
+			 	setIsEditing(false);
+			 })
+			 .catch(err => {
+			 	console.log(err);
+			 })
 	}
 
 	const cancel = (event) => {
@@ -52,8 +59,8 @@ export const UserTable = (props) => {
 				<th scope="row"><Badge color="light">{id}</Badge></th>
 				{isEditing ?
 					<>
-					<td><Input size="sm" type="text" name="name" placeholder="name" value={name} /></td>
-					<td><Input size="sm" type="text" name="bio" placeholder="bio" value={bio} /></td>
+					<td><Input size="sm" type="text" name="name" placeholder="name" value={newObj.name} onChange={handleChanges} /></td>
+					<td><Input size="sm" type="text" name="bio" placeholder="bio" value={newObj.bio} onChange={handleChanges} /></td>
 					</>
 				:
 					<>
