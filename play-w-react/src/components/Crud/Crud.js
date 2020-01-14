@@ -4,8 +4,6 @@ import { Container, Row, Col, Button, Form, Label, Input, Alert, Table } from 'r
 import { UserTable } from "../UserTable";
 
 export const Crud = (props) => {
-	const [name, setName] = useState("");
-	const [bio, setBio] = useState("");
 	const [obj, setObj] = useState({name: "", bio: ""});
 	const [message, setMessage] = useState("");
 	const [data, setData] = useState([]);

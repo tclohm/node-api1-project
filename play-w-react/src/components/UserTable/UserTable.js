@@ -9,15 +9,12 @@ export const UserTable = (props) => {
 	const toLink = `crud/${id}`;
 
 	const [newObj, setNewObj] = useState({name: name, bio: bio});
-	const [message, setMessage] = useState("");
-	const [feedback, setFeedback] = useState(false);
 	const [isEditing, setIsEditing] = useState(false);
 
 	const deleteByID = (event) => {
 		axios.delete(`http://www.localhost:4000/api/users/${id}`)
 			 .then(res => {
-			 	setMessage("deleted");
-			 	alertTimer();
+			 	console.log(res)
 			 })
 			 .catch(err => {
 			 	console.log(err);
@@ -26,13 +23,6 @@ export const UserTable = (props) => {
 
 	const editByID = (event) => {
 		setIsEditing(true)
-	}
-
-	const alertTimer = () => {
-		setFeedback(true)
-		setTimeout(() => {
-			setFeedback(false)
-		}, 1000)
 	}
 
 	const handleChanges = (event) => {
