@@ -2,8 +2,10 @@
 const express = require('express');
 const db = require('./data/db.js');
 const cors = require('cors');
+const helmet = require('helmet')
 const server = express();
 
+server.use(helmet());
 server.use(express.json());
 server.use(cors({
 	origin: 'http://localhost:3000'
@@ -102,6 +104,8 @@ server.put('/api/users/:id', (request, response) => {
 	}
 });
 
-server.listen(4000, () => {
-	console.log("=== server listening on port 4000 ===")
+const port = process.env.PORT || 4000;
+
+server.listen(port, () => {
+	console.log(`=== server listening on port ${port} ===`)
 });
