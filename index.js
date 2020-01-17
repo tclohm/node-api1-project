@@ -1,4 +1,7 @@
 // implement your API here
+// .env
+require('dotenv').config();
+
 const express = require('express');
 const db = require('./data/db.js');
 const cors = require('cors');
